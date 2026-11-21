@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Vòng tròn Hướng nghiệp Đà Nẵng · HNDN</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend+Exa:wght@600&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f2f7fa;--card:#fff;--ink:#0b2a4a;--head:#063564;--mute:#4d6781;--line:#d6e2ec;--k1:#3FBEB3;--k2:#F55928;--km:#6363AD;--t1:#063564;--t2:#fff;--tm:#fff;--teal:#3FBEB3;--yellow:#FFCF03;--sky:#51C7E2;--hero:#063564;--btn:#063564;--btnt:#fff;color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#04223f;--card:#08305a;--ink:#eaf3f9;--head:#fff;--mute:#9db8cf;--line:#1c4a78;--hero:#052a4e;--btn:#3FBEB3;--btnt:#063564;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#04223f;--card:#08305a;--ink:#eaf3f9;--head:#fff;--mute:#9db8cf;--line:#1c4a78;--hero:#052a4e;--btn:#3FBEB3;--btnt:#063564;color-scheme:dark}
+*{box-sizing:border-box}[hidden]{display:none!important}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Roboto,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:980px;margin:0 auto;padding:20px 16px 60px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;background:var(--hero);color:#fff;border-radius:14px;padding:12px 16px;border-bottom:4px solid var(--teal)}
+header small{color:#cfe3f1;font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;font-size:.78rem}
+header .ghost{color:#fff;border-color:rgba(255,255,255,.4)}
+button{font:inherit;cursor:pointer;color:var(--ink)}
+.ghost{background:none;border:1px solid var(--line);border-radius:999px;padding:4px 12px}
+h1{font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;color:var(--head);font-size:clamp(1.4rem,4.6vw,2rem);line-height:1.25;margin:.8em 0 .3em}
+h1 em{color:var(--mute);font-style:normal;font-weight:600}
+h1::after{content:"";display:block;width:64px;height:5px;border-radius:3px;background:var(--yellow);margin-top:12px}
+.lead{color:var(--mute);max-width:62ch}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:20px 0}
+.stat{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--teal);border-radius:12px;padding:12px 14px}
+.stat:nth-child(2){border-top-color:var(--k2)}.stat:nth-child(3){border-top-color:var(--km)}.stat:nth-child(4){border-top-color:var(--yellow)}
+.stat b{display:block;font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;font-size:1.1rem;color:var(--head);margin-top:2px}
+.stat span{color:var(--mute);font-size:.82rem}
+.tabs{display:flex;gap:6px;margin:8px 0 12px}
+.tabs button{background:none;border:1px solid var(--line);border-radius:8px;padding:6px 14px}
+.tabs button[aria-pressed="true"]{background:var(--btn);color:var(--btnt);border-color:var(--btn);font-weight:500}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--mute);font-size:.85rem;margin-bottom:10px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.scroll{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 0}
+#tl{position:relative;margin:4px 14px;background:repeating-linear-gradient(to right,var(--line) 0 1px,transparent 1px 64px)}
+[hidden]{display:none!important}.bar:focus-visible{outline:3px solid var(--head);outline-offset:2px}
+.months{position:relative;height:22px;border-bottom:1px solid var(--line)}
+.months span{position:absolute;top:0;font-size:.75rem;color:var(--mute);padding-left:4px;border-left:1px solid var(--line);height:22px}
+.row{position:relative;height:40px}
+.bar{position:absolute;top:6px;height:28px;border-radius:7px;border:0;font-size:.8rem;font-weight:500;text-align:left;padding:0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar.closed{opacity:.45}
+.today{position:absolute;top:0;bottom:0;width:3px;background:var(--yellow);box-shadow:0 0 0 1px var(--hero);z-index:2;pointer-events:none}
+.hint{color:var(--mute);font-size:.85rem;margin:8px 0}
+.list{display:grid;gap:10px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;text-align:left;width:100%}
+.item small{color:var(--mute);display:block}
+.tag{display:inline-block;font-size:.75rem;border-radius:999px;padding:1px 9px;margin-left:6px;font-weight:500}
+dialog{border:1px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);max-width:420px;width:calc(100% - 32px);padding:20px}
+dialog::backdrop{background:rgba(0,0,0,.45)}
+label{display:block;font-size:.85rem;color:var(--mute);margin-top:10px}
+input,select{width:100%;font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.primary{background:var(--btn);color:var(--btnt);border:0;border-radius:8px;padding:9px 16px;margin-top:14px;font-weight:500}
+.primary:disabled{opacity:.4;cursor:not-allowed}
+.msg{margin-top:10px;font-size:.9rem}
+.hero{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:20px;align-items:center;background:var(--hero);color:#fff;border-radius:20px;padding:28px;margin:18px 0}
+.hero h2{font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;font-size:clamp(1.4rem,5vw,2.2rem);line-height:1.25;margin:0 0 12px}
+.hero p{color:#cfe3f1;margin:0 0 18px;max-width:46ch}
+.hero svg{width:100%;height:auto;display:block}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{display:inline-block;text-decoration:none;font-weight:500;border-radius:999px;padding:10px 20px}
+.btn.y{background:var(--yellow);color:#063564}
+.btn.o{border:1px solid rgba(255,255,255,.5);color:#fff}
+.why{text-align:center;max-width:640px;margin:36px auto;font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;font-size:clamp(1.05rem,3.4vw,1.4rem);line-height:1.6;color:var(--head)}
+.why svg{width:34px;height:34px;display:block;margin:14px auto 0}
+.sec{font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;font-size:1.15rem;color:var(--head);margin:30px 0 4px}
+.cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:12px 0 8px}
+@media(max-width:767px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:479px){.cards{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+.card svg{width:56px;height:56px;margin-bottom:8px}
+.card h3{margin:0 0 4px;font-size:1.05rem;color:var(--head)}
+.card p{margin:0;color:var(--mute);font-size:.92rem}
+footer{margin-top:36px;background:var(--hero);color:#cfe3f1;border-radius:16px;padding:20px;font-size:.88rem}
+.fcols{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;margin-bottom:14px}
+footer b{display:block;color:#fff;font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;font-size:.85rem;margin-bottom:6px}
+footer a{display:block;color:#cfe3f1;text-decoration:none;padding:2px 0}
+.aud{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin:12px 0}
+.aud div{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--teal);border-radius:12px;padding:12px 14px;font-size:.93rem;color:var(--mute)}
+.aud div:nth-child(2){border-left-color:var(--k2)}.aud div:nth-child(3){border-left-color:var(--km)}.aud div:nth-child(4){border-left-color:var(--yellow)}
+.aud b{display:block;color:var(--head);margin-bottom:2px}
+.goals{margin:8px 0 0;padding-left:20px}.goals li{margin:6px 0}
+.float{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--yellow);color:#063564;font-weight:500;text-decoration:none;border-radius:999px;padding:12px 20px;box-shadow:0 6px 18px rgba(0,0,0,.25);z-index:5}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><small>HNDN · Đà Nẵng</small><button class="ghost" id="theme">☾ Tối</button></header>
+<section class="hero">
+<div>
+<h2>Vòng tròn hướng nghiệp Đà Nẵng</h2>
+<p>Nơi người trẻ trò chuyện thật về tương lai nghề nghiệp, với chuyên viên hướng nghiệp và người trong ngành ngồi cạnh.</p>
+<div class="btns"><a class="btn y" href="#map">Đăng ký</a><a class="btn o" href="/trang-chu.html">Tìm hiểu thêm</a></div>
+</div>
+<svg viewBox="0 0 400 300" role="img" aria-label="Những bậc thang đi lên cùng nhau"><circle cx="90" cy="70" r="34" fill="#FFCF03"/><rect x="30" y="220" width="80" height="50" rx="8" fill="#3FBEB3"/><rect x="120" y="180" width="80" height="90" rx="8" fill="#51C7E2"/><rect x="210" y="140" width="80" height="130" rx="8" fill="#6363AD"/><rect x="300" y="100" width="70" height="170" rx="8" fill="#F55928"/><path d="M70 185Q115 120 160 145T250 105T335 65" stroke="#fff" stroke-width="2.5" fill="none" stroke-dasharray="6 6"/><circle cx="70" cy="200" r="13" fill="#fff"/><circle cx="160" cy="160" r="13" fill="#fff"/><circle cx="250" cy="120" r="13" fill="#fff"/><circle cx="335" cy="80" r="13" fill="#fff"/></svg>
+</section>
+
+<h2 class="sec" style="text-align:center">Vòng tròn Hướng nghiệp Đà Nẵng</h2>
+<p class="why" style="margin-top:12px">Vòng tròn cho phép bạn chia sẻ câu chuyện của mình, đón nhận sự nâng đỡ để vượt qua chênh vênh nghề nghiệp.<svg viewBox="0 0 40 40" aria-hidden="true"><path d="M20 2l4 12 12 4-12 4-4 12-4-12-12-4 12-4z" fill="#FFCF03"/></svg></p>
+
+<h1 id="map">Đăng ký vòng tròn</h1>
+<p class="lead">Chọn một đoạn đường bạn có thể đi cùng, xem người điều phối và số thành viên hiện tại, rồi điền tên. (Cổng đóng khi đoạn đường bắt đầu).</p>
+
+<div class="stats">
+<div class="stat"><span>Hôm nay</span><b id="s1">··</b></div>
+<div class="stat"><span>Chương trình kế tiếp</span><b id="s2">··</b></div>
+<div class="stat"><span>Chương trình đang nhận ghi tên</span><b id="s3">··</b></div>
+<div class="stat"><span>Lượt ghi tên</span><b id="s4">··</b></div>
+</div>
+
+<div class="tabs">
+<button id="tTl" aria-pressed="true">Dòng thời gian</button>
+<button id="tLi" aria-pressed="false">Danh sách</button>
+</div>
+<div class="legend">
+<span><i style="background:var(--k1)"></i>Vòng tròn</span>
+<span><i style="background:var(--k2)"></i>Career Identity</span>
+<span>Giờ Việt Nam (UTC+7)</span>
+</div>
+
+<div id="vTl"><div class="scroll"><div id="tl"></div></div>
+<p class="hint">Chọn một trong hai mốc để xem chi tiết và đăng ký.</p></div>
+<div id="vLi" class="list" hidden></div>
+
+<p class="lead" style="margin-top:26px">Bên cạnh Vòng tròn là những buổi hướng nghiệp theo chủ đề, để bạn có thêm công cụ tự vững vàng trên lối đi riêng.</p>
+
+<h2 class="sec">Thử đi, tham gia rất dễ</h2>
+<div class="cards">
+<div class="card"><svg viewBox="0 0 56 56" aria-hidden="true"><path d="M8 10h40v26H26l-10 10V36H8z" fill="#F55928"/></svg><h3>Ai cũng có tiếng nói</h3><p>Nhóm ấm cúng để người ít nói cũng thoải mái sẻ chia.</p></div>
+<div class="card"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="28" cy="28" r="24" fill="#3FBEB3"/><path d="M16 29l8 8 16-17" stroke="#063564" stroke-width="5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>Đơn giản</h3><p>Chọn một chương trình, để lại tên và email, vậy là xong.</p></div>
+<div class="card"><svg viewBox="0 0 56 56" aria-hidden="true"><circle cx="22" cy="28" r="16" fill="#6363AD"/><circle cx="36" cy="28" r="16" fill="#51C7E2" fill-opacity=".85"/></svg><h3>Có người đồng hành</h3><p>Đi cùng nhau thì mọi khởi đầu đều bớt nặng nề.</p></div>
+<div class="card"><svg viewBox="0 0 56 56" aria-hidden="true"><path d="M28 4l7 17 18 2-14 12 5 18-16-10-16 10 5-18L3 23l18-2z" fill="#FFCF03"/></svg><h3>Có chuyên gia trong nghề</h3><p>Kết nối với những người hỗ trợ được vấn đề của bạn.</p></div>
+</div>
+
+<footer><div class="fcols"><div><b>HNDN</b>Vòng tròn Hướng nghiệp Đà Nẵng: chia sẻ câu chuyện của bạn và đón nhận sự nâng đỡ để vượt qua chênh vênh nghề nghiệp.</div><div><b>Khám phá</b><a href="/trang-chu.html">Trang chủ</a><a href="/trang-chu.html#hndn-mission">Giới thiệu</a><a href="/trang-chu.html#hndn-services">Dịch vụ</a><a href="/trang-chu.html#hndn-activities">Hoạt động</a><a href="/trang-chu.html#hndn-contact">Liên hệ</a></div></div>Thông tin bạn gửi chỉ dùng để xếp nhóm và liên hệ về khoá tập huấn.</footer>
+</div>
+
+<a class="float" href="#map">Đăng ký</a>
+<dialog id="dlg">
+<h2 id="dT" style="margin:0 0 6px;font-family:'Lexend Exa',Roboto,sans-serif;font-weight:600;font-size:1.1rem;color:var(--head)"></h2>
+<div id="dI" style="color:var(--mute);font-size:.9rem"></div>
+<form method="dialog" id="f" onsubmit="return false">
+<div style="position:absolute;left:-9999px" aria-hidden="true"><label>Website<input id="hp" tabindex="-1" autocomplete="off"></label></div>
+<label>Tên của bạn<input id="fn" required></label>
+<label>Email<input id="fe" type="email" required></label>
+<label>Bạn tham gia với vai trò<select id="fr"><option value="thanh_vien">Thành viên</option></select></label>
+<button class="primary" id="go">Ghi tên</button>
+<button class="ghost" id="cl" style="margin-left:6px;margin-top:14px">Đóng</button>
+</form>
+<div class="msg" id="msg"></div>
+</dialog>
+
+<script>
+/* Dán địa chỉ Web app của Google Apps Script vào đây. Để trống = chạy bản thử với dữ liệu mẫu. */
+const API_URL="https://script.google.com/macros/s/AKfycbzMURUcHZRUCtvkbJlNb8ATHis_hmJzPHnYO4MeD7hz8HRrrcSb_4-RBIpkRv92Uy-vGA/exec";
+
+const PROGRAMS=[
+{id:1,name:"Vòng tròn",kind:"1",start:"2026-11-29 15:00",end:"2026-11-29 16:30",coords:[],cap:20,members:0},
+{id:2,name:"Career Identity",kind:"2",start:"2026-12-06 15:00",end:"2026-12-06 16:30",coords:[],cap:20,members:0}
+];
+let GROUPS=PROGRAMS.map(p=>({...p,id:p.start.slice(0,10),sheetId:null}));
+const COLOR={"1":"var(--k1)","2":"var(--k2)"};
+const TXT={"1":"var(--t1)","2":"var(--t2)"};
+const KIND={"1":"Vòng tròn","2":"Hướng nghiệp theo chủ đề"};
+const col=k=>COLOR[k]||COLOR["1"], txt=k=>TXT[k]||TXT["1"];
+const PX=64, DAY=864e5, $=id=>document.getElementById(id);
+
+/* Ngày giờ: nhận "yyyy-MM-dd HH:mm" */
+const P=s=>{const m=String(s).match(/(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{1,2}):(\d{2}))?/);return m?new Date(+m[1],m[2]-1,+m[3],+(m[4]||0),+(m[5]||0)):null};
+const pad=n=>String(n).padStart(2,"0");
+const fD=t=>pad(t.getDate())+"/"+pad(t.getMonth()+1)+"/"+t.getFullYear();
+const fT=t=>pad(t.getHours())+":"+pad(t.getMinutes());
+const when=g=>{const a=P(g.start),b=P(g.end);if(!a||!b)return"";return fD(a)+" · "+fT(a)+"–"+(fD(a)===fD(b)?"":fD(b)+" ")+fT(b)};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+let mine={};
+try{mine=JSON.parse(localStorage.getItem("mine")||"{}")}catch(e){}
+const isClosed=g=>Date.parse(g.start.replace(' ','T')+':00+07:00')<=Date.now();
+const count=g=>g.members+(!API_URL&&mine[g.id]==="thanh_vien"?1:0);
+const isFull=g=>count(g)>=g.cap;
+const coordsOf=g=>(g.coords||[]).concat(!API_URL&&g.demoCoords?g.demoCoords:[]);
+
+function statusText(g){
+ if(mine[g.id])return "bạn đã ghi tên (chờ duyệt)";
+ if(isClosed(g))return "đã đóng ghi tên";
+ if(!g.sheetId)return "đang chờ đồng bộ đăng ký";
+ if(isFull(g))return "hết chỗ thành viên";
+ return `còn ${g.cap-count(g)} chỗ`;
+}
+
+function stats(){
+ const open=GROUPS.filter(g=>!isClosed(g));
+ const next=open.map(g=>P(g.start)).sort((a,b)=>a-b)[0];
+ $("s1").textContent=fD(new Date());
+ $("s2").textContent=next?fD(next).slice(0,5)+" · "+fT(next):"—";
+ $("s3").textContent=open.length;
+ $("s4").textContent=GROUPS.every(g=>g.sheetId)?GROUPS.reduce((n,g)=>n+count(g),0):'—';
+}
+
+function timeline(){
+ const el=$("tl");
+ const origin=P(GROUPS[0].start.slice(0,10));origin.setDate(origin.getDate()-1);
+ const last=P(GROUPS[GROUPS.length-1].start.slice(0,10));
+ const days=Math.round((last-origin)/DAY)+4;
+ el.style.width=days*PX+'px';
+ const ticks=Array.from({length:days},(_,i)=>{const d=new Date(origin);d.setDate(d.getDate()+i);return `<span style="left:${i*PX}px">${fD(d).slice(0,5)}</span>`;});
+ el.innerHTML=`<div class="months">${ticks.join('')}</div>`+GROUPS.map(g=>{const left=Math.round((P(g.start.slice(0,10))-origin)/DAY)*PX;return `<div class="row"><button class="bar" data-id="${esc(g.id)}" aria-label="${esc(g.name)} · ${esc(when(g))}" style="left:${left}px;background:${col(g.kind)};color:${txt(g.kind)}">${esc(g.name)} · ${fT(P(g.start))}–${fT(P(g.end))}</button></div>`;}).join('');
+ const now=(Date.now()-origin.getTime())/DAY;
+ if(now>=0&&now<days)el.insertAdjacentHTML('beforeend',`<div class="today" style="left:${now*PX}px" aria-label="Hôm nay"></div>`);
+ el.querySelectorAll('button').forEach(b=>b.onclick=()=>openGroup(b.dataset.id));
+}
+
+function list(){
+ $("vLi").innerHTML=GROUPS.map(g=>`<button class="item" data-id="${esc(g.id)}"><b>${esc(g.name)}</b><span class="tag" style="background:${col(g.kind)};color:${txt(g.kind)}">${KIND[g.kind]||""}</span><small>${esc(when(g))} · ${statusText(g)}</small></button>`).join("");
+ $("vLi").querySelectorAll(".item").forEach(b=>b.onclick=()=>openGroup(b.dataset.id));
+}
+
+let cur=null,t0=0;
+function fillInfo(){
+ const co=coordsOf(cur);
+ $("dT").textContent=cur.name;
+ $("dI").innerHTML=`${esc(when(cur))}<br>Người điều phối: <b>${co.length?co.map(esc).join(", "):"đang chờ bạn"}</b><br>Thành viên hiện tại: ${cur.sheetId?count(cur)+'/'+cur.cap:'chưa cập nhật'} · ${statusText(cur)}`;
+ $("go").disabled=!cur.sheetId||isClosed(cur)||isFull(cur)||!!mine[cur.id];
+}
+function openGroup(id){
+ cur=GROUPS.find(g=>String(g.id)===String(id));
+ fillInfo();
+ $("msg").textContent="";t0=Date.now();$("hp").value="";
+ $("dlg").showModal();
+}
+$("cl").onclick=()=>$("dlg").close();
+$("go").onclick=async()=>{
+ if(!$("f").reportValidity())return;
+ const btn=$("go"),role=$("fr").value,name=$("fn").value.trim();
+ btn.disabled=true;$("msg").textContent="Đang gửi…";
+ const done=()=>{mine[cur.id]=role;try{localStorage.setItem("mine",JSON.stringify(mine))}catch(e){}};
+ if(!API_URL){
+  done();
+  if(role==="dieu_phoi")cur.demoCoords=(cur.demoCoords||[]).concat([name]);
+  $("msg").textContent="Đã ghi tên (bản thử, chưa gửi đi đâu).";fillInfo();render();return;
+ }
+ try{
+  const r=await fetch(API_URL,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify({group:cur.sheetId,name:name,email:$("fe").value.trim(),role:role,hp:$("hp").value,ms:Date.now()-t0})});
+  const j=await r.json();
+  if(j.ok){
+   done();
+   $("msg").textContent=role==="dieu_phoi"?"Đã ghi tên làm người điều phối. Tên bạn sẽ hiện sau khi ban tổ chức duyệt.":"Đã ghi tên. Trạng thái: chờ duyệt.";
+   await load();cur=GROUPS.find(g=>String(g.id)===String(cur.id))||cur;fillInfo();
+  }else{$("msg").textContent=j.error||"Không gửi được, thử lại sau.";btn.disabled=false;}
+ }catch(e){$("msg").textContent="Lỗi mạng, thử lại sau.";btn.disabled=false;}
+};
+
+function view(v){
+ $("vTl").hidden=v!=="tl";$("vLi").hidden=v!=="li";
+ $("tTl").setAttribute("aria-pressed",v==="tl");$("tLi").setAttribute("aria-pressed",v==="li");
+}
+$("tTl").onclick=()=>view("tl");$("tLi").onclick=()=>view("li");
+$("theme").onclick=()=>{
+ const r=document.documentElement;
+ const dark=r.dataset.theme?r.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;
+ r.dataset.theme=dark?"light":"dark";
+ $("theme").textContent=dark?"☾ Tối":"☀ Sáng";
+};
+function render(){stats();timeline();list();}
+async function load(){
+ if(!API_URL){render();return;}
+ let rows=[];
+ try{const r=await fetch(API_URL,{cache:'no-store'});const j=await r.json();if(r.ok&&Array.isArray(j.groups))rows=j.groups;}catch{}
+ const day=s=>/^\d{4}-\d{2}-\d{2}(?: |$)/.test(s)?s.slice(0,10):Number.isFinite(Date.parse(s))?new Date(Date.parse(s)+7*3600000).toISOString().slice(0,10):'';
+ GROUPS=PROGRAMS.map(p=>{const matches=rows.filter(g=>String(g.name).trim().normalize().toLowerCase()===p.name.toLowerCase()&&day(g.start)===p.start.slice(0,10));const g=matches.length===1?matches[0]:null;return {...p,id:p.start.slice(0,10),sheetId:g?.id??null,cap:g?.cap??null,members:g?.members??null,coords:g?.coords||(g?.lead?[g.lead]:[])};});
+ render();
+}
+render();load();
+setInterval(()=>{if(!document.hidden&&!$('dlg').open)load()},30000);
+</script>
+</body>
+</html>
